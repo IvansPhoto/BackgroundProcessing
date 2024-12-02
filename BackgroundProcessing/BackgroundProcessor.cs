@@ -2,7 +2,7 @@
 
 namespace BackgroundProcessing;
 
-public class BackgroundProcessor
+public sealed class BackgroundProcessor : IDisposable
 {
     private readonly ILogger<BackgroundProcessor> _logger;
     private readonly SemaphoreSlim _semaphoreSlim;
@@ -10,7 +10,7 @@ public class BackgroundProcessor
     public BackgroundProcessor(ILogger<BackgroundProcessor> logger, IOptions<BackgroundProcessingCfg> options)
     {
         _logger = logger;
-        _semaphoreSlim = new SemaphoreSlim(options.Value.MinParallelism, options.Value.MaxParallelism);
+        _semaphoreSlim = new SemaphoreSlim(options.Value.InitialParallelism, options.Value.MaxParallelism);
     }
     
     public async Task Proceed(Func<Task> task, CancellationToken cancellationToken)
@@ -46,4 +46,6 @@ public class BackgroundProcessor
             _semaphoreSlim.Release();
         }
     }
+
+    public void Dispose() => _semaphoreSlim.Dispose();
 }

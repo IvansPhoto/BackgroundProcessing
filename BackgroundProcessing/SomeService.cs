@@ -1,6 +1,6 @@
 ﻿namespace BackgroundProcessing;
 
-public class SomeService
+public sealed class SomeService
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<SomeService> _logger;
@@ -38,7 +38,7 @@ public class SomeService
     private async Task AsyncJob(string text, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Work started with {Text}", text);
-        var response = await _httpClient.GetAsync("http://localhost:5050/", cancellationToken);
+        var response = await _httpClient.GetAsync("/get", cancellationToken);
         _logger.LogInformation("Work stopped with {Text} {StatusCode}", text, response.StatusCode);
     }
     

@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundProcessing", "BackgroundProcessing\BackgroundProcessing.csproj", "{5593EE75-22F8-41EA-BC45-32841AFD0EA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTest", "WebTest\WebTest.csproj", "{792BBCAD-43F1-41B3-9652-63B38554AF80}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundProcessing.Tests", "BackgroundProcessing.Tests\BackgroundProcessing.Tests.csproj", "{5342EE43-BF14-4305-A17E-2A36207F3AE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +14,9 @@ Global
 		{5593EE75-22F8-41EA-BC45-32841AFD0EA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5593EE75-22F8-41EA-BC45-32841AFD0EA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5593EE75-22F8-41EA-BC45-32841AFD0EA3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{792BBCAD-43F1-41B3-9652-63B38554AF80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{792BBCAD-43F1-41B3-9652-63B38554AF80}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{792BBCAD-43F1-41B3-9652-63B38554AF80}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{792BBCAD-43F1-41B3-9652-63B38554AF80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5342EE43-BF14-4305-A17E-2A36207F3AE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5342EE43-BF14-4305-A17E-2A36207F3AE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5342EE43-BF14-4305-A17E-2A36207F3AE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5342EE43-BF14-4305-A17E-2A36207F3AE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
