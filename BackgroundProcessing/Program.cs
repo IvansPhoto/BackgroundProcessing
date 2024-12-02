@@ -3,6 +3,10 @@ using BackgroundProcessing;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<BackgroundProcessor>();
 builder.Services.AddTransient<SomeService>();
+builder.Services.AddOptions<BackgroundProcessingCfg>()
+    .BindConfiguration(BackgroundProcessingCfg.Section)
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
 
 var app = builder.Build();
 
