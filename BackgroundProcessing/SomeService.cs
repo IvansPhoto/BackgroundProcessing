@@ -4,11 +4,13 @@ public class SomeService
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<SomeService> _logger;
+    private readonly HttpClient _httpClient;
 
-    public SomeService(ILogger<SomeService> logger, IServiceProvider serviceProvider)
+    public SomeService(ILogger<SomeService> logger, IServiceProvider serviceProvider, HttpClient httpClient)
     {
         _logger = logger;
         _serviceProvider = serviceProvider;
+        _httpClient = httpClient;
     }
 
     public void DoAsyncBackground(string text, CancellationToken cancellationToken)
@@ -36,8 +38,8 @@ public class SomeService
     private async Task AsyncJob(string text, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Work started with {Text}", text);
-        await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
-        _logger.LogInformation("Work stopped with {Text}", text);
+        var response = await _httpClient.GetAsync("http://localhost:5050/", cancellationToken);
+        _logger.LogInformation("Work stopped with {Text} {StatusCode}", text, response.StatusCode);
     }
     
     private void SyncJob(string text, CancellationToken cancellationToken)
