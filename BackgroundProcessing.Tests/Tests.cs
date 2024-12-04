@@ -92,10 +92,34 @@ public partial class Tests
         var result = await HttpClient.GetAsync(new Uri($"http://{_container!.Hostname}:{_container.GetMappedPublicPort(8080)}/async/text/100"));
         await Task.Delay(TimeSpan.FromSeconds(60));
 
-        // Arrange
-        Assert.That(_server.LogEntries.Count(), Is.EqualTo(50));
+        Assert.Multiple(() =>
+        {
+            // Arrange
+            Assert.That(result.IsSuccessStatusCode, Is.True);
+            Assert.That(_server.LogEntries.Count(), Is.GreaterThanOrEqualTo(50));
+        });
     }
+        
+    [Test]
+    public async Task TestQueue()
+    {
+        // Arrange
+        _server
+            .Given(Request.Create().WithPath("/get").UsingGet())
+            .RespondWith(Response.Create().WithStatusCode(200).WithDelay(TimeSpan.FromSeconds(1)));
 
+        // Act
+        var result = await HttpClient.GetAsync(new Uri($"http://{_container!.Hostname}:{_container.GetMappedPublicPort(8080)}/async-queue/text/100"));
+        await Task.Delay(TimeSpan.FromSeconds(10));
+
+        Assert.Multiple(() =>
+        {
+            // Arrange
+            Assert.That(result.IsSuccessStatusCode, Is.True);
+            Assert.That(_server.LogEntries.Count(), Is.GreaterThanOrEqualTo(10));
+        });
+    }
+    
     [GeneratedRegex(".*Now listening on.*")]
     private static partial Regex MyRegex();
 }

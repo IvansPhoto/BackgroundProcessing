@@ -10,42 +10,44 @@ public sealed class BackgroundProcessor : IDisposable
     public BackgroundProcessor(ILogger<BackgroundProcessor> logger, IOptions<BackgroundProcessingCfg> options)
     {
         _logger = logger;
-        _semaphoreSlim = new SemaphoreSlim(options.Value.InitialParallelism, options.Value.MaxParallelism);
+        _semaphoreSlim = new SemaphoreSlim(options.Value.Parallelism, options.Value.Parallelism);
     }
-    
-    public async Task Proceed(Func<Task> task, CancellationToken cancellationToken)
-    {
-        try
+
+    public void Proceed(Func<Task> task, CancellationToken cancellationToken) =>
+        Task.Run(async () =>
         {
-            await _semaphoreSlim.WaitAsync(cancellationToken);
-            await task.Invoke();
-        }
-        catch (Exception exception)
+            try
+            {
+                await _semaphoreSlim.WaitAsync(cancellationToken);
+                await task.Invoke();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "");
+            }
+            finally
+            {
+                _semaphoreSlim.Release();
+            }
+        }, cancellationToken);
+
+    public void Proceed(Action action, CancellationToken cancellationToken) =>
+        Task.Run(async () =>
         {
-            _logger.LogError(exception, "");
-        }
-        finally
-        {
-            _semaphoreSlim.Release();
-        }
-    }
-    
-    public async Task Proceed(Action task, CancellationToken cancellationToken)
-    {
-        try
-        {
-            await _semaphoreSlim.WaitAsync(cancellationToken);
-            task.Invoke();
-        }
-        catch (Exception exception)
-        {
-            _logger.LogError(exception, "");
-        }
-        finally
-        {
-            _semaphoreSlim.Release();
-        }
-    }
+            try
+            {
+                await _semaphoreSlim.WaitAsync(cancellationToken);
+                action.Invoke();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "");
+            }
+            finally
+            {
+                _semaphoreSlim.Release();
+            }
+        }, cancellationToken);
 
     public void Dispose() => _semaphoreSlim.Dispose();
 }
