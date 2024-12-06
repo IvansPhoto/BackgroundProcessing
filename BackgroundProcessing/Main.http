@@ -1,5 +1,11 @@
-### GET request to example server
-GET http://localhost:5152/async/Async-job
+###
+GET http://localhost:5152/sync/text/100
 
 ###
-GET http://localhost:5152/sync/Sync-job
+GET http://localhost:5152/sync-queue/first/30
+
+###
+GET http://localhost:5152/sync-queue/second/3
+
+###
+GET http://localhost:5152/sync-queue/third/3
